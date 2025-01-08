@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6380:6379'
+    volumes:
+        - redisdata:/data/redis
+    networks:
+      - node-network
+
+  mongodb:
+    image: mongo:4.2.24-rc2-bionic
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - node-network
+
+  oktravel-nodejs-backend:
+    build: .
+    image: dhieu1304/oktravel-nodejs-backend:latest
+    environment:
+      - MONGODB_URL=mongodb://172.17.0.1:27017/oktravel-nodejs-backend
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - '3007:3006'
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - .:/usr/src/oktravel-nodejs-backend
+    networks:
+      - node-network
+
+volumes:
+  dbdata:
+  redisdata:
+
+networks:
+  node-network:
+    driver: bridge
