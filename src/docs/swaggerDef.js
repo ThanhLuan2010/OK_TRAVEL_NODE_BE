@@ -13,6 +13,9 @@ const swaggerDef = {
   },
   servers: [
     {
+      url: `https://oktravelnodebe-production.up.railway.app/api/v1`,
+    },
+    {
       url: `http://localhost:${config.port}/api/v1`,
     },
   ],
