@@ -30,10 +30,6 @@ const defaultRoutes = [
     path: '/conversation',
     route: conversationRoute,
   },
-  {
-    path: '/docs',
-    route: docsRoute,
-  },
 ];
 
 const devRoutes = [

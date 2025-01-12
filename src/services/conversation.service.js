@@ -1,11 +1,9 @@
 const logger = require('../config/logger');
 const sequelize = require('../config/database');
 const { v4: uuid_v4 } = require('uuid');
-const formatDateTime = require('../utils/formatDateTime');
 const { responseListData } = require('../utils/responseFormat');
 const { CONVERSATION_TYPE } = require('../constant/conversation.constant');
 const { userService } = require('./index');
-const nodeCacheService = require('./nodeCache.service');
 
 const findOneConversationMemberByTwoEmail = async (email1, email2) => {
   try {
@@ -217,7 +215,7 @@ const findListConversation = async (account_id, page = 1, limit = 20) => {
           WHERE account_id = :account_id
         ) AND ce.is_delete = :is_delete
         GROUP BY ce.id
-        ORDER BY ce.created_at DESC
+        ORDER BY ce.last_modified_date DESC
         LIMIT :limit OFFSET :offset`,
       {
         replacements: { account_id, is_delete: false, limit, offset: +(limit * (page - 1)) },
@@ -226,7 +224,7 @@ const findListConversation = async (account_id, page = 1, limit = 20) => {
       }
     );
 
-    nodeCacheService.setMemberConversation(account_id, conversations);
+    // nodeCacheService.setMemberConversation(account_id, conversations);
 
     return responseListData(conversations, totalCount.length, page, limit, conversations.length);
   } catch (e) {
@@ -237,7 +235,6 @@ const findListConversation = async (account_id, page = 1, limit = 20) => {
 
 const findListMessage = async (conversation_id, account_id, page, limit) => {
   try {
-    // todo: check account_id in conversation_id
     const messages = await sequelize.query(
       `SELECT *
         FROM conversation_message_entity
@@ -262,10 +259,59 @@ const findListMessage = async (conversation_id, account_id, page, limit) => {
   }
 };
 
+const newMessage = async (account, data) => {
+  const transaction = await sequelize.transaction();
+  try {
+    await sequelize.query(
+      `INSERT INTO conversation_message_entity
+        (id, created_at, last_modified_date, is_delete, account_id, conversation_id, message, message_type)
+        VALUES (:id, :created_at, :last_modified_date, :is_delete, :account_id, :conversation_id, :message, :message_type)`,
+      {
+        replacements: {
+          id: uuid_v4(),
+          created_at: new Date(),
+          last_modified_date: new Date(),
+          is_delete: 0,
+          account_id: account.account_id,
+          conversation_id: data.conversation_id,
+          message: data.message,
+          message_type: data.message_type,
+        },
+        transaction,
+      }
+    );
+
+    await sequelize.query(
+      `UPDATE conversation_entity SET
+        last_modified_date = :last_modified_date,
+        lasted_message = :lasted_message,
+        lasted_sender_name = :lasted_sender_name
+        WHERE id = :id`,
+      {
+        replacements: {
+          last_modified_date: new Date(),
+          lasted_message: data.message,
+          lasted_sender_name: account.last_name,
+          id: data.conversation_id,
+        },
+        transaction,
+      }
+    );
+
+    await transaction.commit();
+    return true;
+  } catch (e) {
+    await transaction.rollback();
+    logger.error(`ERR newMessage: ${e.message}`);
+    return false;
+  }
+};
+
 module.exports = {
   findOneConversationMemberByTwoEmail,
   detailConversation,
   findOneOrCreateNewConversationPersonal,
   findListConversation,
   findListMessage,
+  newMessage,
 };

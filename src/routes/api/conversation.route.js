@@ -13,7 +13,6 @@ router.post(
   validate(conversationValidation.newConversation),
   conversationController.newConversation
 );
-
 router.get('/messages/list', authJwt(), validate(conversationValidation.listMessages), conversationController.listMessages);
 
 module.exports = router;
@@ -71,6 +70,39 @@ module.exports = router;
  *               email:
  *                 type: email
  *                 example: "test@gmail.com"
+ *     responses:
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+
+/**
+ * @swagger
+ * /conversation/messages/list:
+ *   get:
+ *     summary: list Message Conversation
+ *     description: list Message Conversation.
+ *     tags: [Conversation]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: conversation_id
+ *         in: query
+ *         description: conversation_id
+ *         schema:
+ *           type: uuid
+ *           example: "07c8a77a-c6d5-492b-9050-04c51470c204"
+ *       - name: page
+ *         in: query
+ *         description: page
+ *         schema:
+ *           type: number
+ *           example: 1
+ *       - name: limit
+ *         in: query
+ *         description: limit
+ *         schema:
+ *           type: number
+ *           example: 50
  *     responses:
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'

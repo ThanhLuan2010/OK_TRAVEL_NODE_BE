@@ -1,12 +1,12 @@
 const logger = require('../config/logger');
-const { authJWTSocket } = require('../middlewares/jwtAuth');
+const { authJwtSocket } = require('../middlewares/jwtAuth');
 const conversationSocket = require('./conversation.socket');
 
 const SocketServer = (io) => {
   io.use((socket, next) => {
     try {
       const header = socket.handshake.headers.authorization;
-      const auth = authJWTSocket(header);
+      const auth = authJwtSocket(header);
       if (auth.status) {
         socket.email = auth.email;
         next();

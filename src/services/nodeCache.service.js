@@ -66,8 +66,61 @@ const delMemberConversation = async (account_id) => {
   }
 };
 
+// conversation { ..., members: [] }
+const setConversation = (conversation) => {
+  try {
+    setNodeCache(`${conversation.id}_conversation`, conversation, 10 * 60);
+  } catch (e) {
+    logger.error(`ERR addMemberConversation: ${e.message}`);
+  }
+};
+
+// return conversation { ..., member_{account_id}: {} }
+const getConversation = async (conversation_id) => {
+  try {
+    let data = getNodeCache(`${conversation_id}_conversation`);
+    if (!data) {
+      const [conversation] = await sequelize.query(
+        `SELECT ce.*,
+              JSON_ARRAYAGG(
+                JSON_OBJECT(
+                  'id', cme.id,
+                  'account_id', cme.account_id,
+                  'email', ae.email,
+                  'first_name', ae.first_name,
+                  'last_name', ae.last_name,
+                  'gender', ae.gender,
+                  'image_url', ae.image_url,
+                  'phone_number', ae.phone_number)
+                ) AS members
+        FROM conversation_entity ce
+        LEFT JOIN conversation_member_entity cme
+        ON ce.id = cme.conversation_id
+        LEFT JOIN account_entity ae
+        ON cme.account_id = ae.id
+        WHERE ce.id = :conversation_id AND ce.is_delete = :is_delete
+        GROUP BY ce.id`,
+        {
+          replacements: { conversation_id, is_delete: false },
+          type: sequelize.QueryTypes.SELECT,
+          raw: true,
+        }
+      );
+      if (conversation) {
+        setConversation(conversation);
+      }
+    }
+    data = getNodeCache(`${conversation_id}_conversation`);
+    return data;
+  } catch (e) {
+    logger.error(`ERR addMemberConversation: ${e.message}`);
+  }
+};
+
 module.exports = {
   setMemberConversation,
   getMemberConversation,
   delMemberConversation,
+  setConversation,
+  getConversation,
 };
