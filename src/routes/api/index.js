@@ -1,5 +1,6 @@
 const express = require('express');
 const blogRoute = require('./blog.route');
+const suggessPlace = require('./place-suggess.route');
 const interestedRoute = require('./interested.route');
 const favoriteRoute = require('./favorite.route');
 const conversationRoute = require('./conversation.route');
@@ -17,6 +18,10 @@ const defaultRoutes = [
   {
     path: '/blog',
     route: blogRoute,
+  },
+  {
+    path: '/suggess-place',
+    route: suggessPlace,
   },
   {
     path: '/interested',
