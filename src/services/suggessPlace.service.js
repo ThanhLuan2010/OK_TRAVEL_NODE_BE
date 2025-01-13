@@ -1,7 +1,5 @@
 const logger = require("../config/logger");
 const sequelize = require("../config/database");
-const { v4: uuid_v4 } = require("uuid");
-const formatDateTime = require("../utils/formatDateTime");
 const { responseListData } = require("../utils/responseFormat");
 
 // data: { title, description, icon, url, images[], is_delete, is_hidden }
@@ -21,10 +19,10 @@ const addSuggessPlace = async (body) => {
       }
     );
     if (places?.length > 0) {
-      if (places[0]?.isSuggess) {
+      if (places[0]?.is_suggess) {
         await sequelize.query(
           `UPDATE travel_place_entity
-          SET isSuggess = false
+          SET is_suggess = false
           WHERE id = :id;`,
           {
             replacements: {
@@ -32,11 +30,11 @@ const addSuggessPlace = async (body) => {
             },
           }
         );
-        return { ...places[0], isSuggess: false };
+        return { ...places[0], is_suggess: false };
       } else {
         await sequelize.query(
           `UPDATE travel_place_entity
-          SET isSuggess = true
+          SET is_suggess = true
           WHERE id = :id;`,
           {
             replacements: {
@@ -44,7 +42,7 @@ const addSuggessPlace = async (body) => {
             },
           }
         );
-        return { ...places[0], isSuggess: true };
+        return { ...places[0], is_suggess: true };
       }
     } else {
       return false;
@@ -64,7 +62,7 @@ const listSuggessPlace = async (filter) => {
     const totalCount = await sequelize.query(
       `SELECT COUNT(*) as total
         FROM travel_place_entity
-        WHERE isSuggess = true`,
+        WHERE is_suggess = true`,
       {
         replacements: {},
         type: sequelize.QueryTypes.SELECT,
@@ -74,7 +72,7 @@ const listSuggessPlace = async (filter) => {
     const places = await sequelize.query(
       `SELECT *
         FROM travel_place_entity
-        WHERE isSuggess = true
+        WHERE is_suggess = true
         ORDER BY created_at DESC
         LIMIT :limit OFFSET :offset`,
       {
