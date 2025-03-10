@@ -5,3 +5,4 @@ module.exports.favoriteService = require('./favorite.service');
 module.exports.conversationService = require('./conversation.service');
 module.exports.suggessPlaceService = require('./suggessPlace.service');
 module.exports.nodeCacheService = require('./nodeCache.service');
+module.exports.faqService = require('./faq.service');

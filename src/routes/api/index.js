@@ -6,6 +6,7 @@ const favoriteRoute = require('./favorite.route');
 const conversationRoute = require('./conversation.route');
 const testRoute = require('./test.route');
 const docsRoute = require('./docs.route');
+const FAQRoute = require("./FAQ.route")
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -34,6 +35,10 @@ const defaultRoutes = [
   {
     path: '/conversation',
     route: conversationRoute,
+  },
+  {
+    path: '/faq',
+    route: FAQRoute,
   },
   {
     path: '/docs',
