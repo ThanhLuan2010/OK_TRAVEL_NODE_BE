@@ -3,3 +3,4 @@ module.exports.interestedController = require('./interested.controller');
 module.exports.conversationController = require('./conversation.controller');
 module.exports.suggessPlaceController = require('./suggessPlace.controller');
 module.exports.faqController = require('./faq.controller');
+module.exports.CourseController = require('./course.controller');

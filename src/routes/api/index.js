@@ -7,6 +7,7 @@ const conversationRoute = require('./conversation.route');
 const testRoute = require('./test.route');
 const docsRoute = require('./docs.route');
 const FAQRoute = require("./FAQ.route")
+const CourseRoute = require("./course.route")
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -39,6 +40,10 @@ const defaultRoutes = [
   {
     path: '/faq',
     route: FAQRoute,
+  },
+  {
+    path: '/course',
+    route: CourseRoute,
   },
   {
     path: '/docs',
