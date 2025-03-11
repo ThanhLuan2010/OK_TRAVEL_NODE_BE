@@ -9,6 +9,8 @@ const docsRoute = require('./docs.route');
 const FAQRoute = require("./FAQ.route")
 const CourseRoute = require("./course.route")
 const introduceRoute = require("./introduce.route")
+const socialRoute = require("./social.route")
+const partnerRoute = require("./partner.route")
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -49,6 +51,14 @@ const defaultRoutes = [
   {
     path: '/introduce',
     route: introduceRoute,
+  },
+  {
+    path: '/social',
+    route: socialRoute,
+  },
+  {
+    path: '/partner',
+    route: partnerRoute,
   },
   {
     path: '/docs',

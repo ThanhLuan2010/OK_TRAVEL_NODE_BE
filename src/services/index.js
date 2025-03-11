@@ -9,3 +9,4 @@ module.exports.faqService = require('./faq.service');
 module.exports.courseService = require('./course.service');
 module.exports.introduceService = require('./introduce.service');
 module.exports.socialService = require('./social.service');
+module.exports.partnerService = require('./partner.service');

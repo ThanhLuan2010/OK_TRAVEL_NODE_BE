@@ -1,12 +1,12 @@
 const logger = require("../config/logger");
 const sequelize = require("../config/database");
 const { v4: uuid_v4 } = require("uuid");
-const { responseListData, responseData } = require("../utils/responseFormat");
+const { responseData } = require("../utils/responseFormat");
 
-const createSocial = async (data) => {
+const createPartner = async (data) => {
   try {
     const blogId = uuid_v4();
-    const query = `INSERT INTO social_entity
+    const query = `INSERT INTO partner_entity
         (id, image, created_at, link)
         VALUES (:id, :image, :created_at, :link)`;
     await sequelize.query(query, {
@@ -24,10 +24,10 @@ const createSocial = async (data) => {
   }
 };
 
-const updateSocial = async (id, data) => {
+const updatePartner = async (id, data) => {
   try {
     await sequelize.query(
-      `UPDATE social_entity
+      `UPDATE partner_entity
     SET
         image = :image,
         link = :link
@@ -49,10 +49,10 @@ const updateSocial = async (id, data) => {
   }
 };
 
-const deleteSocial = async (id) => {
+const deletePartner = async (id) => {
   try {
     const query = `
-    DELETE FROM social_entity
+    DELETE FROM partner_entity
     WHERE id = :id`;
 
     await sequelize.query(query, {
@@ -69,11 +69,11 @@ const deleteSocial = async (id) => {
   }
 };
 
-const listSocial = async () => {
+const listPartner = async () => {
   try {
     const faq = await sequelize.query(
       `SELECT *
-        FROM social_entity
+        FROM partner_entity
         ORDER BY created_at DESC`,
       {
         replacements: {},
@@ -84,14 +84,14 @@ const listSocial = async () => {
     return faq;
   } catch (e) {
     logger.error(`ERR : ${e.message}`);
-    return responseData({},"");
+    return responseData({}, "");
   }
 };
 
-const findSocialById = async (id) => {
+const findPartnerById = async (id) => {
   try {
     const query = `SELECT *
-        FROM social_entity
+        FROM partner_entity
         WHERE id = '${id}'`;
 
     const data = await sequelize.query(query, {
@@ -105,11 +105,10 @@ const findSocialById = async (id) => {
   }
 };
 
-
 module.exports = {
-  createSocial,
-  updateSocial,
-  deleteSocial,
-  listSocial,
-  findSocialById,
+  createPartner,
+  updatePartner,
+  deletePartner,
+  listPartner,
+  findPartnerById,
 };

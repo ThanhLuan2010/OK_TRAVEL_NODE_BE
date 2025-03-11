@@ -5,3 +5,4 @@ module.exports.FaqValidation = require('./faq.validation');
 module.exports.courseValidation = require('./course.validation');
 module.exports.introduceValidate = require('./introduce.validation');
 module.exports.socialValidate = require('./social.validation');
+module.exports.partnerValidate = require('./partner.validation');
