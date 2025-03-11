@@ -1,0 +1,29 @@
+const MESSAGE_TYPE = Object.freeze({
+  SUCCESS: "SUCCESS",
+  PENDING: "PENDING",
+  PAUSED: "PAUSED",
+  CANCELLED: "CANCELLED",
+  PAYMENT: "PAYMENT",
+});
+
+const SERVICE_TYPE = Object.freeze({
+  HOTEL: "HOTEL",
+  TOUR: "TOUR",
+  CARRETAIL: "CARRETAIL",
+  PLAYZONE: "PLAYZONE",
+  COACH: "COACH",
+});
+
+const BOOKING_TYPE = Object.freeze({
+    TICKET: "TICKET",
+    HOTTEL: "HOTTEL",
+    VERHICLE: "VERHICLE",
+    TOUR: "TOUR",
+    CROACH: "CROACH",
+  });
+
+module.exports = {
+  MESSAGE_TYPE,
+  SERVICE_TYPE,
+  BOOKING_TYPE
+};

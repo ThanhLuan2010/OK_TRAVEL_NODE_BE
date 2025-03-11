@@ -11,6 +11,7 @@ const CourseRoute = require("./course.route")
 const introduceRoute = require("./introduce.route")
 const socialRoute = require("./social.route")
 const partnerRoute = require("./partner.route")
+const bookingRoute = require("./booking.route")
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -59,6 +60,10 @@ const defaultRoutes = [
   {
     path: '/partner',
     route: partnerRoute,
+  },
+  {
+    path: '/booking',
+    route: bookingRoute,
   },
   {
     path: '/docs',

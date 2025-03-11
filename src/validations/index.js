@@ -6,3 +6,4 @@ module.exports.courseValidation = require('./course.validation');
 module.exports.introduceValidate = require('./introduce.validation');
 module.exports.socialValidate = require('./social.validation');
 module.exports.partnerValidate = require('./partner.validation');
+module.exports.bookingValidate = require('./booking.validation');

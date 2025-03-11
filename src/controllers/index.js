@@ -7,3 +7,4 @@ module.exports.CourseController = require('./course.controller');
 module.exports.introduceController = require('./introduce.controller');
 module.exports.socialController = require('./social.controller');
 module.exports.partnerController = require('./partner.controller');
+module.exports.bookingController = require('./booking.controller');
