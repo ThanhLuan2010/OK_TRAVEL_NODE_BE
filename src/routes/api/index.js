@@ -8,6 +8,7 @@ const testRoute = require('./test.route');
 const docsRoute = require('./docs.route');
 const FAQRoute = require("./FAQ.route")
 const CourseRoute = require("./course.route")
+const introduceRoute = require("./introduce.route")
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -44,6 +45,10 @@ const defaultRoutes = [
   {
     path: '/course',
     route: CourseRoute,
+  },
+  {
+    path: '/introduce',
+    route: introduceRoute,
   },
   {
     path: '/docs',
